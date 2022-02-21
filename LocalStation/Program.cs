@@ -27,7 +27,6 @@ if (hubClient != null)
         Console.WriteLine("Press Escape to quit.");
         Console.WriteLine();
 
-        //await Task.Delay(5000);
         Console.WriteLine("Calling Test...");
         await hubClient.Test();
     }

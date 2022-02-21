@@ -1,5 +1,4 @@
-﻿
-namespace LocalStation
+﻿namespace LocalStation
 {
     internal interface IHubClient : IAsyncDisposable
     {
