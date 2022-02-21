@@ -9,15 +9,17 @@ namespace LocalStation
     internal class HubClient : IHubClient
     {
         private readonly HubSettings _settings;
-        private readonly HttpContent _tokenPostData;
+        private readonly Dictionary<string, string> _tokenPostData;
+        private readonly Dictionary<string, string> _refreshPostData;
         private readonly HubConnection _connection;
 
-        private TokenInfo _tokenInfo = new(); // TODO: store in database instead of field.
+        private TokenInfo _tokenInfo = new();
 
         public HubClient(IOptions<HubSettings> options)
         {
             _settings = options.Value;
             _tokenPostData = BuildTokenPostData();
+            _refreshPostData = BuildBasicRefreshPostData();
 
             IHubConnectionBuilder connectionBuilder = new HubConnectionBuilder().WithUrl(_settings.HubUrl, options =>
             {
@@ -32,9 +34,9 @@ namespace LocalStation
             });
         }
 
-        private HttpContent BuildTokenPostData()
+        private Dictionary<string, string> BuildTokenPostData()
         {
-            Dictionary<string, string> values = new()
+            return new Dictionary<string, string>()
             {
                 { "username", _settings.Username },
                 { "password", _settings.Password },
@@ -43,7 +45,17 @@ namespace LocalStation
                 { "client_id", _settings.ClientId },
                 { "response_type", "token id_token" }
             };
-            return new FormUrlEncodedContent(values);
+        }
+
+        private Dictionary<string, string> BuildBasicRefreshPostData()
+        {
+            return new Dictionary<string, string>()
+            {
+                { "grant_type", "refresh_token" },
+                { "response_type", "id_token" },
+                { "client_id", _settings.ClientId },
+                { "resource", _settings.ClientId }
+            };
         }
 
         public Task Start()
@@ -58,6 +70,13 @@ namespace LocalStation
 
         private async Task<string?> GetToken()
         {
+            bool test = false;
+            if (test)
+            {
+                _tokenInfo = await RefreshToken();
+                return _tokenInfo.AccessToken;
+            }
+
             if (_tokenInfo.Expiration > DateTime.Now.AddMinutes(-3))
             {
                 return _tokenInfo.AccessToken;
@@ -69,8 +88,10 @@ namespace LocalStation
 
         private async Task<TokenInfo> GetNewToken()
         {
+            FormUrlEncodedContent content = new(_tokenPostData);
+
             using HttpClient client = new();
-            HttpResponseMessage response = await client.PostAsync(_settings.TokenUrl, _tokenPostData);
+            HttpResponseMessage response = await client.PostAsync(_settings.TokenUrl, content);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception("Failure calling token end-point.");
@@ -79,7 +100,29 @@ namespace LocalStation
             string responseContent = await response.Content.ReadAsStringAsync();
             var responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent) ?? new Dictionary<string, string>();
 
-            // TODO NOW: what if token expires on refresh? Pbly login again
+            return responseDict.ToTokenInfo();
+        }
+
+        private async Task<TokenInfo> RefreshToken()
+        {
+            Console.WriteLine("Refreshing token...");
+
+            FormUrlEncodedContent content = new(_refreshPostData.Concat(new Dictionary<string, string>
+            {
+                { "refresh_token", _tokenInfo.RefreshToken }
+            }));
+
+            using HttpClient client = new();
+            HttpResponseMessage response = await client.PostAsync(_settings.TokenUrl, content);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Failure calling refresh token end-point");
+            }
+
+            string responseContent = await response.Content.ReadAsStringAsync();
+            var responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent) ?? new Dictionary<string, string>();
+
+            // TODO NOW: what if refresh token expires? Pbly login again
             return responseDict.ToTokenInfo();
         }
 
