@@ -25,6 +25,11 @@ namespace LocalStation
             {
                 Console.WriteLine($"Got message from hub: {message}");
             });
+
+            _connection.On<string>("Test", message =>
+            {
+                Console.WriteLine($"Test event. Receiced message: {message}");
+            });
         }
 
         public Task Start()

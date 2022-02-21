@@ -43,4 +43,9 @@ while (true)
     {
         break;
     }
+
+    if (key.Key == ConsoleKey.Enter && hubClient != null)
+    {
+        await hubClient.Test();
+    }
 }

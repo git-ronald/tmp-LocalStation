@@ -46,19 +46,23 @@ namespace LocalStation.TokenProviders
 
         public async Task<string?> GetToken()
         {
-            bool test = false;
-            if (test)
+            DateTime threshold = DateTime.Now.AddMinutes(-3);
+
+            if (_tokenInfo.AccessTokenExpiration > threshold)
             {
-                _tokenInfo = await RefreshToken();
+                Console.WriteLine("Reuse token.");
                 return _tokenInfo.AccessToken;
             }
 
-            if (_tokenInfo.Expiration > DateTime.Now.AddMinutes(-3))
+            if (_tokenInfo.RefreshTokenExpiration > threshold)
             {
+                _tokenInfo = await RefreshToken();
+                Console.WriteLine("Refreshed token.");
                 return _tokenInfo.AccessToken;
             }
 
             _tokenInfo = await GetNewToken();
+            Console.WriteLine($"Got new token. Expiry time: {_tokenInfo.AccessTokenExpiration}.");
             return _tokenInfo.AccessToken;
         }
 
@@ -74,7 +78,7 @@ namespace LocalStation.TokenProviders
             }
 
             string responseContent = await response.Content.ReadAsStringAsync();
-            var responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent) ?? new Dictionary<string, string>();
+            var responseDict = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent) ?? new Dictionary<string, object>();
 
             return responseDict.ToTokenInfo();
         }
@@ -96,7 +100,7 @@ namespace LocalStation.TokenProviders
             }
 
             string responseContent = await response.Content.ReadAsStringAsync();
-            var responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent) ?? new Dictionary<string, string>();
+            var responseDict = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent) ?? new Dictionary<string, object>();
 
             // TODO NOW: what if refresh token expires? Pbly login again
             return responseDict.ToTokenInfo();

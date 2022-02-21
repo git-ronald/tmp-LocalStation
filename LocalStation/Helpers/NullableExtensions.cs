@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LocalStation.Helpers
+﻿namespace LocalStation.Helpers
 {
     // TODO: shared library
-    public static class HelperExtensions
+    public static class NullableExtensions
     {
         public static TValue GetOrThrow<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) where TKey : notnull
         {
@@ -33,6 +27,46 @@ namespace LocalStation.Helpers
                 throw getException();
             }
             return value;
+        }
+
+        public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue) where TKey : notnull
+        {
+            if (dictionary is null)
+            {
+                return defaultValue;
+            }
+
+            if (!dictionary.TryGetValue(key, out TValue? value))
+            {
+                return defaultValue;
+            }
+            return value;
+        }
+
+        public static Int32 ForceParseToInt(this string? value)
+        {
+            if (value is null)
+            {
+                return default;
+            }
+
+            try
+            {
+                return Int32.Parse(value);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        public static string ForceToString(this object value)
+        {
+            if (value == null)
+            {
+                return String.Empty;
+            }
+            return value.ToString() ?? String.Empty;
         }
     }
 }

@@ -4,6 +4,7 @@
     {
         public string AccessToken { get; set; } = "";
         public string RefreshToken { get; set; } = "";
-        public DateTime Expiration { get; set; } = DateTime.MinValue;
+        public DateTime AccessTokenExpiration { get; set; } = DateTime.MinValue;
+        public DateTime RefreshTokenExpiration { get; set; } = DateTime.MinValue;
     }
 }
