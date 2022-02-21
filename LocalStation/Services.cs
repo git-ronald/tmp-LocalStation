@@ -1,4 +1,5 @@
 ﻿using LocalStation.Settings;
+using LocalStation.TokenProviders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +24,7 @@ namespace LocalStation
 
             ServiceProvider serviceProvider = new ServiceCollection()
                 .Configure<HubSettings>(configuration.GetSection("hub"))
+                .AddSingleton<ITokenProvider, RopcTokenProvider>()
                 .AddTransient<IHubClient, HubClient>()
                 .BuildServiceProvider();
 
