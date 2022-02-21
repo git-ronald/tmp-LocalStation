@@ -21,7 +21,14 @@ if (hubClient != null)
     {
         Console.WriteLine("Starting Hub client...");
         await hubClient.Start();
+
+        Console.WriteLine();
         Console.WriteLine("Hub client started.");
+        Console.WriteLine("Press Escape to quit.");
+        Console.WriteLine();
+
+        //await Task.Delay(5000);
+        Console.WriteLine("Calling Test...");
         await hubClient.Test();
     }
     catch (Exception ex)
@@ -30,7 +37,6 @@ if (hubClient != null)
     }
 }
 
-Console.Write("Press Escape to quit: ");
 while (true)
 {
     ConsoleKeyInfo key = Console.ReadKey(true);

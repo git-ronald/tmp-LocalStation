@@ -1,4 +1,6 @@
-﻿using LocalStation.Settings;
+﻿using LocalStation.Helpers;
+using LocalStation.Models;
+using LocalStation.Settings;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -10,6 +12,8 @@ namespace LocalStation
         private readonly HubSettings _settings;
         private readonly HttpContent _tokenPostData;
         private readonly HubConnection _connection;
+
+        private TokenInfo _tokenInfo = new(); // TODO: store in database instead of field.
 
         public HubClient(IOptions<HubSettings> options)
         {
@@ -55,6 +59,17 @@ namespace LocalStation
 
         private async Task<string?> GetToken()
         {
+            if (_tokenInfo.Expiration > DateTime.Now.AddMinutes(-3))
+            {
+                return _tokenInfo.AccessToken;
+            }
+
+            _tokenInfo = await GetNewToken();
+            return _tokenInfo.AccessToken;
+        }
+
+        private async Task<TokenInfo> GetNewToken()
+        {
             using HttpClient client = new();
             HttpResponseMessage response = await client.PostAsync(_settings.TokenUrl, _tokenPostData);
             if (!response.IsSuccessStatusCode)
@@ -65,20 +80,8 @@ namespace LocalStation
             string responseContent = await response.Content.ReadAsStringAsync();
             var responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent) ?? new Dictionary<string, string>();
 
-            // TODO NOW: other items: expires_in, refresh_token
-
-            // TODO NOW: what if token expires?
-
-            if (!responseDict.TryGetValue("access_token", out string? accessToken))
-            {
-                accessToken = null;
-            }
-            if (String.IsNullOrEmpty(accessToken))
-            {
-                throw new Exception("Failed to retrieve access-token.");
-            }
-
-            return accessToken;
+            // TODO NOW: what if token expires on refresh? Pbly login again
+            return responseDict.ToTokenInfo();
         }
 
         public async ValueTask DisposeAsync()
