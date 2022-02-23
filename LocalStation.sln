@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedLibraries", "SharedLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreLibrary", "SharedLibraries\CoreLibrary\CoreLibrary.csproj", "{3C189E8E-7ADF-489C-9B47-8ED20423AE63}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeerLibrary", "SharedLibraries\PeerLibrary\PeerLibrary.csproj", "{913F2AC5-6F55-49E9-94C2-4144F8BD1EE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,12 +30,17 @@ Global
 		{3C189E8E-7ADF-489C-9B47-8ED20423AE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C189E8E-7ADF-489C-9B47-8ED20423AE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C189E8E-7ADF-489C-9B47-8ED20423AE63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{913F2AC5-6F55-49E9-94C2-4144F8BD1EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{913F2AC5-6F55-49E9-94C2-4144F8BD1EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{913F2AC5-6F55-49E9-94C2-4144F8BD1EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{913F2AC5-6F55-49E9-94C2-4144F8BD1EE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3C189E8E-7ADF-489C-9B47-8ED20423AE63} = {BCC796AD-EFD9-4513-8667-EE7982BFD19A}
+		{913F2AC5-6F55-49E9-94C2-4144F8BD1EE6} = {BCC796AD-EFD9-4513-8667-EE7982BFD19A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D69F9040-6A5A-4990-8AD2-D07E26DC7855}
