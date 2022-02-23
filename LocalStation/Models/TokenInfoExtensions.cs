@@ -1,4 +1,4 @@
-﻿using LocalStation.Helpers;
+﻿using CoreLibrary.Helpers;
 
 namespace LocalStation.Models
 {
@@ -8,7 +8,6 @@ namespace LocalStation.Models
         {
             DateTime now = DateTime.Now;
 
-            var b = tokenDict.GetOrDefault("refresh_token_expires_in", "").ToString().ForceParseToInt();
             TokenInfo tokenInfo = new()
             {
                 AccessToken = tokenDict.GetOrThrow("access_token").ForceToString(),
