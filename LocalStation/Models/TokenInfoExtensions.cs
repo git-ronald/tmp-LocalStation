@@ -10,10 +10,10 @@ namespace LocalStation.Models
 
             TokenInfo tokenInfo = new()
             {
-                AccessToken = tokenDict.GetOrThrow("access_token").ForceToString(),
-                RefreshToken = tokenDict.GetOrThrow("refresh_token").ForceToString(),
-                AccessTokenExpiration = now.AddSeconds(Int32.Parse(tokenDict.GetOrThrow("expires_in").ForceToString())),
-                RefreshTokenExpiration = now.AddSeconds(tokenDict.GetOrDefault("refresh_token_expires_in", "").ToString().ForceParseToInt())
+                AccessToken = tokenDict.GetOrThrow("access_token").ToStringValue(),
+                RefreshToken = tokenDict.GetOrThrow("refresh_token").ToStringValue(),
+                AccessTokenExpiration = now.AddSeconds(Int32.Parse(tokenDict.GetOrThrow("expires_in").ToStringValue())),
+                RefreshTokenExpiration = now.AddSeconds(tokenDict.GetOrDefault("refresh_token_expires_in", "").ToString().ParseToIntValue())
             };
 
             return tokenInfo;
