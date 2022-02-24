@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SharedLibraries\CoreLibrary\CoreLibrary.csproj" />
+    <ProjectReference Include="..\SharedLibraries\PeerLibrary\PeerLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

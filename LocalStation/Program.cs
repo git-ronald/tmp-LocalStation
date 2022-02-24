@@ -1,11 +1,14 @@
 ﻿using LocalStation;
+using Microsoft.Extensions.DependencyInjection;
+using PeerLibrary;
 
-static IHubClient? Startup()
+static IHubClient? Start()
 {
     try
     {
         Console.WriteLine("Initializing...");
-        return Services.Create().Get<IHubClient>();
+        var serviceProvider = Startup.ConfigureServices();
+        return serviceProvider.GetService<IHubClient>();
     }
     catch (Exception ex)
     {
@@ -14,7 +17,7 @@ static IHubClient? Startup()
     }
 }
 
-await using IHubClient? hubClient = Startup();
+await using IHubClient? hubClient = Start();
 if (hubClient != null)
 {
     try
