@@ -30,7 +30,6 @@ if (hubClient != null)
         Console.WriteLine("Press Escape to quit.");
         Console.WriteLine();
 
-        Console.WriteLine("Calling Test...");
         await hubClient.Test();
     }
     catch (Exception ex)
