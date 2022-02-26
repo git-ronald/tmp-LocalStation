@@ -1,5 +1,4 @@
 ﻿using LocalStation;
-using PeerLibrary;
 using PeerLibrary.Configuration;
 
 try
@@ -7,7 +6,7 @@ try
     Console.WriteLine("Initializing...");
     Console.WriteLine();
 
-    await Startup.ConfigureServices().GetServiceOrThrow<IHubClient>().Start();
+    await Startup.ConfigureServices().StartHubClient();
 }
 catch (Exception ex)
 {
