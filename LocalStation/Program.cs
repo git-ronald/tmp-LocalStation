@@ -1,53 +1,15 @@
 ﻿using LocalStation;
-using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary;
+using PeerLibrary.Configuration;
 
-static IHubClient? Start()
+try
 {
-    try
-    {
-        Console.WriteLine("Initializing...");
-        var serviceProvider = Startup.ConfigureServices();
-        return serviceProvider.GetService<IHubClient>();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine(ex.Message);
-        return null;
-    }
+    Console.WriteLine("Initializing...");
+    Console.WriteLine();
+
+    await Startup.ConfigureServices().GetServiceOrThrow<IHubClient>().Start();
 }
-
-await using IHubClient? hubClient = Start();
-if (hubClient != null)
+catch (Exception ex)
 {
-    try
-    {
-        Console.WriteLine("Starting Hub client...");
-        await hubClient.Start();
-
-        Console.WriteLine();
-        Console.WriteLine("Hub client started.");
-        Console.WriteLine("Press Escape to quit.");
-        Console.WriteLine();
-
-        await hubClient.Test();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Failed to start Hub client: {ex.Message}");
-    }
-}
-
-while (true)
-{
-    ConsoleKeyInfo key = Console.ReadKey(true);
-    if (key.Key == ConsoleKey.Escape)
-    {
-        break;
-    }
-
-    if (key.Key == ConsoleKey.Enter && hubClient != null)
-    {
-        await hubClient.Test();
-    }
+    Console.WriteLine(ex.Message);
 }
