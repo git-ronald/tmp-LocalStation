@@ -9,7 +9,7 @@ namespace LocalStation
         public static IServiceProvider ConfigureServices()
         {
             return new ServiceCollection()
-                .AdddJsonConfiguration("appsettings.json")
+                .AddJsonConfiguration("appsettings.json")
                 .Configure<MainSettings>("mainSettings")
                 .AddPeerLibrary()
                 .BuildServiceProvider();
