@@ -1,5 +1,4 @@
-﻿using LocalStation.Settings;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary.Configuration;
 
 namespace LocalStation
@@ -9,8 +8,6 @@ namespace LocalStation
         public static IServiceProvider ConfigureServices()
         {
             return new ServiceCollection()
-                .AddJsonConfiguration("appsettings.json")
-                .Configure<MainSettings>("mainSettings")
                 .AddPeerLibrary()
                 .BuildServiceProvider();
         }
