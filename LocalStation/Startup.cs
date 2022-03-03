@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary.Configuration;
+using TestAppLibrary.Configuration;
 
 namespace LocalStation
 {
@@ -9,6 +10,7 @@ namespace LocalStation
         {
             return new ServiceCollection()
                 .AddPeerLibrary()
+                .AddTestApp()
                 .BuildServiceProvider();
         }
     }
