@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary.Configuration;
 using PeerLibrary.Settings;
+using TestAppLibrary.Data;
 
 namespace TestAppLibrary.Configuration
 {
@@ -8,7 +9,8 @@ namespace TestAppLibrary.Configuration
     {
         public static IServiceCollection AddTestApp(this IServiceCollection services)
         {
-            return services.AddJsonConfiguration("testapp.settings.json").Configure<PeerSettings>("peerSettings");
+            return services.AddJsonConfiguration("testapp.settings.json").Configure<PeerSettings>("peerSettings")
+                .AddDbContext<TestDbContext>();
         }
     }
 }
