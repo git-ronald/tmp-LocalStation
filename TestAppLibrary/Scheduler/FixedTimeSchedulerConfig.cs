@@ -1,21 +1,25 @@
-﻿using CoreLibrary.SchedulerService;
+﻿using CoreLibrary.Helpers;
+using CoreLibrary.SchedulerService;
+using PeerLibrary.Scheduler;
 
 namespace TestAppLibrary.Scheduler
 {
-    internal class FixedTimeSchedulerConfig : ISchedulerConfig<object, TimeSpan>
+    internal class FixedTimeSchedulerConfig : PeerFixedTimeSchedulerConfig
     {
         public FixedTimeSchedulerConfig()
         {
-            Tasks[new TimeSpan(18, 55, 0)] = new()
-            {
+            Tasks.Ensure(new TimeSpan(21, 14, 0)).AddItems(
                 (token, state) =>
                 {
-                    Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} FIXED TIME!");
+                    Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Fixed time 1 by TestApp");
                     return Task.CompletedTask;
-                }
-            };
+                });
+            Tasks.Ensure(new TimeSpan(21, 15, 0)).AddItems(
+                (token, state) =>
+                {
+                    Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Fixed time 2 by TestApp");
+                    return Task.CompletedTask;
+                });
         }
-
-        public Dictionary<TimeSpan, List<ScheduledTaskDelegate<object>>> Tasks { get; } = new();
     }
 }

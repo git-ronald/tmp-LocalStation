@@ -1,41 +1,35 @@
 ﻿using CoreLibrary;
-using CoreLibrary.SchedulerService;
+using CoreLibrary.Helpers;
+using PeerLibrary.Scheduler;
 
 namespace TestAppLibrary.Scheduler
 {
-    internal class TimeCompartmentSchedulerConfig : ISchedulerConfig<object, TimeCompartments>
+    internal class TimeCompartmentSchedulerConfig : PeerCompartmentSchedulerConfig //ISchedulerConfig<object, TimeCompartments>
     {
         public TimeCompartmentSchedulerConfig()
         {
-            Tasks[TimeCompartments.EveryMinute] = new()
-            {
-                ScheduleEveryMinute
-            };
+            //Tasks[TimeCompartments.Every2Minutes] = new()
+            //{
+            //    ScheduleEvery2Minutes1,
+            //    ScheduleEvery2Minutes2,
+            //};
 
-            Tasks[TimeCompartments.Every2Minutes] = new()
-            {
+            //Tasks[TimeCompartments.Every3Minutes] = new()
+            //{
+            //    ScheduleEvery3Minutes
+            //};
+
+            Tasks.Ensure(TimeCompartments.Every2Minutes).AddItems(
                 ScheduleEvery2Minutes1,
-                ScheduleEvery2Minutes2,
-                ScheduleEvery2Minutes3
-            };
+                ScheduleEvery2Minutes2);
 
-            Tasks[TimeCompartments.Every3Minutes] = new()
-            {
-                ScheduleEvery3Minutes
-            };
-        }
-
-        public Dictionary<TimeCompartments, List<ScheduledTaskDelegate<object>>> Tasks { get; } = new();
-
-        private Task ScheduleEveryMinute(CancellationToken stoppingToken, object? state)
-        {
-            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every minute");
-            return Task.CompletedTask;
+            Tasks.Ensure(TimeCompartments.Every3Minutes).AddItems(
+                ScheduleEvery3Minutes);
         }
 
         private Task ScheduleEvery2Minutes1(CancellationToken stoppingToken, object? state)
         {
-            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every 2 minutes");
+            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every 2 minutes by TestApp");
             return Task.CompletedTask;
         }
 
@@ -44,16 +38,9 @@ namespace TestAppLibrary.Scheduler
             throw new Exception("Oh noes!");
         }
 
-        private Task ScheduleEvery2Minutes3(CancellationToken stoppingToken, object? state)
-        {
-            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Also every 2 minutes");
-            //await _hubContext.Clients.Group(HubConstants.FrontEndPeer).SendAsync("FromSchedule");
-            return Task.CompletedTask;
-        }
-
         private Task ScheduleEvery3Minutes(CancellationToken stoppingToken, object? state)
         {
-            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every 3 minutes");
+            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every 3 minutes by TestApp");
             return Task.CompletedTask;
         }
     }
