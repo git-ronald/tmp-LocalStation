@@ -1,5 +1,4 @@
 ﻿using CoreLibrary;
-using CoreLibrary.SchedulerService;
 using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary.Configuration;
 using PeerLibrary.Scheduler;
@@ -15,8 +14,8 @@ namespace TestAppLibrary.Configuration
         {
             return services.AddJsonConfiguration("testapp.settings.json").Configure<PeerSettings>("peerSettings")
                 .AddDbContext<TestDbContext>()
-                .AddTransient<ISchedulerConfig<SchedulerState, TimeSpan>, FixedTimeSchedulerConfig>()
-                .AddTransient<ISchedulerConfig<SchedulerState, TimeCompartments>, TimeCompartmentSchedulerConfig>();
+                .AddTransient<ISchedulerConfig<TimeSpan>, FixedTimeSchedulerConfig>()
+                .AddTransient<ISchedulerConfig<TimeCompartments>, TimeCompartmentSchedulerConfig>();
         }
     }
 }

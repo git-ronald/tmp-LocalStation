@@ -1,47 +1,23 @@
 ﻿using CoreLibrary;
 using CoreLibrary.Helpers;
+using CoreLibrary.SchedulerService;
 using PeerLibrary.Scheduler;
 
 namespace TestAppLibrary.Scheduler
 {
-    internal class TimeCompartmentSchedulerConfig : PeerCompartmentSchedulerConfig //ISchedulerConfig<object, TimeCompartments>
+    internal class TimeCompartmentSchedulerConfig : PeerCompartmentConfig
     {
-        public TimeCompartmentSchedulerConfig()
+        public override Dictionary<TimeCompartments, SchedulerTaskList> BuildSchedule(SchedulerState state)
         {
-            //Tasks[TimeCompartments.Every2Minutes] = new()
-            //{
-            //    ScheduleEvery2Minutes1,
-            //    ScheduleEvery2Minutes2,
-            //};
+            var schedule = base.BuildSchedule(state);
+            //schedule.Ensure(TimeCompartments.EveryMinute).Add(
+            //    token =>
+            //    {
+            //        Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every minute by TestApp");
+            //        return Task.CompletedTask;
+            //    });
 
-            //Tasks[TimeCompartments.Every3Minutes] = new()
-            //{
-            //    ScheduleEvery3Minutes
-            //};
-
-            Tasks.Ensure(TimeCompartments.Every2Minutes).AddItems(
-                ScheduleEvery2Minutes1,
-                ScheduleEvery2Minutes2);
-
-            Tasks.Ensure(TimeCompartments.Every3Minutes).AddItems(
-                ScheduleEvery3Minutes);
-        }
-
-        private Task ScheduleEvery2Minutes1(CancellationToken stoppingToken, object? state)
-        {
-            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every 2 minutes by TestApp");
-            return Task.CompletedTask;
-        }
-
-        private Task ScheduleEvery2Minutes2(CancellationToken stoppingToken, object? state)
-        {
-            throw new Exception("Oh noes!");
-        }
-
-        private Task ScheduleEvery3Minutes(CancellationToken stoppingToken, object? state)
-        {
-            Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss} Every 3 minutes by TestApp");
-            return Task.CompletedTask;
+            return schedule;
         }
     }
 }
