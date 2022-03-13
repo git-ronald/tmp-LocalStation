@@ -1,14 +1,19 @@
 ﻿using CoreLibrary.Helpers;
 using CoreLibrary.SchedulerService;
+using PeerLibrary.Data;
 using PeerLibrary.Scheduler;
 
 namespace TestAppLibrary.Scheduler
 {
     internal class FixedTimeSchedulerConfig : PeerFixedTimeConfig
     {
-        public override Dictionary<TimeSpan, SchedulerTaskList> BuildSchedule(SchedulerState state)
+        //public FixedTimeSchedulerConfig(PeerDbContext peerDbContext) : base(peerDbContext)
+        //{
+        //}
+
+        public override async Task<Dictionary<TimeSpan, SchedulerTaskList>> BuildSchedule(SchedulerState state)
         {
-            var schedule = base.BuildSchedule(state);
+            var schedule = await base.BuildSchedule(state);
 
             //var existingEvent = schedule.First();
             //existingEvent.Value.Add(

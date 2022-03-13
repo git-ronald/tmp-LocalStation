@@ -7,9 +7,9 @@ namespace TestAppLibrary.Scheduler
 {
     internal class TimeCompartmentSchedulerConfig : PeerCompartmentConfig
     {
-        public override Dictionary<TimeCompartments, SchedulerTaskList> BuildSchedule(SchedulerState state)
+        public override async Task<Dictionary<TimeCompartments, SchedulerTaskList>> BuildSchedule(SchedulerState state)
         {
-            var schedule = base.BuildSchedule(state);
+            var schedule = await base.BuildSchedule(state);
             //schedule.Ensure(TimeCompartments.EveryMinute).Add(
             //    token =>
             //    {
