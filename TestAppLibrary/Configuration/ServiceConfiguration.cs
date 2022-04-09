@@ -1,5 +1,4 @@
 ﻿using CoreLibrary;
-using CoreLibrary.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary.Configuration;
 using PeerLibrary.Scheduler;
