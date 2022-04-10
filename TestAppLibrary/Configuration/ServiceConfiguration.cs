@@ -1,6 +1,7 @@
 ﻿using CoreLibrary;
 using Microsoft.Extensions.DependencyInjection;
 using PeerLibrary.Configuration;
+using PeerLibrary.PeerApp.Interfaces;
 using PeerLibrary.Scheduler;
 using PeerLibrary.Settings;
 using TestAppLibrary.Data;

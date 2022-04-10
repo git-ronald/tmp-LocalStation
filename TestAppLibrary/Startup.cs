@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PeerLibrary.PeerApp;
+using PeerLibrary.PeerApp.Interfaces;
 using TestAppLibrary.Data;
 
 namespace TestAppLibrary;

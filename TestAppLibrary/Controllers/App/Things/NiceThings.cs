@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestAppLibrary.Data;
 
-namespace TestAppLibrary.Controllers.Things
+namespace TestAppLibrary.Controllers.App.Things
 {
     public class NiceThings
     {
